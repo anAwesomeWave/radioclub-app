@@ -5,3 +5,4 @@ venv/
 *.xml
 *.iml
 .idea
+*__pycache__*
