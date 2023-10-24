@@ -1,3 +1,7 @@
-.*
+add \.env
 !.gitignore
 venv/
+*db*
+*.xml
+*.iml
+.idea
