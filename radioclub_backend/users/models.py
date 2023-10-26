@@ -22,6 +22,19 @@ class CustomUser(AbstractUser):
         null=False,
         default=False,
     )
+    avatar = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='users/avatars'
+    )
+
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    # REQUIRED_FIELDS = ['email']
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
+    def __str__(self):
+        return self.username
