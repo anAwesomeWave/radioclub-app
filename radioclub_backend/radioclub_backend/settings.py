@@ -64,10 +64,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'radioclub_backend.urls'
 
+TEMPLATES_DIR = BASE_DIR / 'templates'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -218,6 +220,9 @@ DJOSER = {
     'SERIALIZERS': {
         'current_user': 'users.serializers.UpdateProfile',
     },
+    'EMAIL': {
+        'activation': 'users.email.CustomActivationEmail',
+    }
 }
 
 # EMAIL SMTP CONFIG
