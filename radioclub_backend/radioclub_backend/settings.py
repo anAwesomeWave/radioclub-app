@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'djoser',
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
+    'songs.apps.SongsConfig',
 ]
 
 MIDDLEWARE = [
