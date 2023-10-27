@@ -215,7 +215,9 @@ DJOSER = {
     # we can notify users, that their data has been changed
     # 'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
     # 'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
-    'SERIALIZERS': {},
+    'SERIALIZERS': {
+        'current_user': 'users.serializers.UpdateProfile',
+    },
 }
 
 # EMAIL SMTP CONFIG

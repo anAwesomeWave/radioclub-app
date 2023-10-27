@@ -6,3 +6,6 @@ venv/
 *.iml
 .idea
 .env
+media/*
+!media/.gitkeep
+*__pycache__*
