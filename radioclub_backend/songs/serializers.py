@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Album, Song, Comment
+from .models import Album, Song, CommentSong
 
 
 class AlbumListSerializer(serializers.ModelSerializer):
