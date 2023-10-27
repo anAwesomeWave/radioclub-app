@@ -15,4 +15,5 @@ class AlbumDetailSerializer(serializers.ModelSerializer):
     """List of songs in album"""
 
     class Meta:
+        pass
 
