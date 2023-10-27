@@ -8,4 +8,6 @@ venv/
 .env
 media/*
 !media/.gitkeep
+radioclub_backend/static/data/
+!radioclub_backend/static/data/csv/
 *__pycache__*
