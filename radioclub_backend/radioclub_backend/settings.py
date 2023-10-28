@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'debug_toolbar',
+    'drf_yasg',
     'djoser',
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',

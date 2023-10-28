@@ -4,23 +4,26 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CustomUser(AbstractUser):
+    ADMIN = 'Admin'
+    MODERATOR = 'Moderator'
+    DEFAULT_USER = 'Default'
+    ROLE_CHOICE = [
+        (ADMIN, ADMIN),
+        (MODERATOR, MODERATOR),
+        (DEFAULT_USER, DEFAULT_USER),
+    ]
     email = models.EmailField(
         _('email address'),
         unique=True,
         blank=False,
         null=False
     )
-    is_banned = models.BooleanField(
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICE,
+        default=DEFAULT_USER,
         null=False,
-        default=False,
-    )
-    is_moderator = models.BooleanField(
-        null=False,
-        default=False,
-    )
-    is_admin = models.BooleanField(
-        null=False,
-        default=False,
+        blank=True
     )
     avatar = models.ImageField(
         null=True,
