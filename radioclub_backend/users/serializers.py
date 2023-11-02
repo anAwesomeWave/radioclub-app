@@ -29,4 +29,5 @@ class UserProfile(serializers.ModelSerializer):
             'is_user',
             'is_moderator',
             'is_admin',
+            'is_banned',
         )

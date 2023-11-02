@@ -7,10 +7,12 @@ class CustomUser(AbstractUser):
     ADMIN = 'Admin'
     MODERATOR = 'Moderator'
     DEFAULT_USER = 'Default'
+    BANNED_USER = 'Banned'
     ROLE_CHOICE = [
         (ADMIN, ADMIN),
         (MODERATOR, MODERATOR),
         (DEFAULT_USER, DEFAULT_USER),
+        (BANNED_USER, BANNED_USER),
     ]
     email = models.EmailField(
         _('email address'),
@@ -43,6 +45,10 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+    @property
+    def is_banned(self):
+        return self.role == self.BANNED_USER
 
     @property
     def is_user(self):
