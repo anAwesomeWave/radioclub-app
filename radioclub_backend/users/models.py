@@ -30,14 +30,31 @@ class CustomUser(AbstractUser):
         blank=True,
         upload_to='users/avatars'
     )
+    bio = models.TextField(
+        blank=True,
+        null=True
+    )
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
+
     # REQUIRED_FIELDS = ['email']
 
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+    @property
+    def is_user(self):
+        return self.role == self.DEFAULT_USER
+
+    @property
+    def is_admin(self):
+        return self.is_superuser or self.role == self.ADMIN
+
+    @property
+    def is_moderator(self):
+        return self.role == self.MODERATOR
 
     def __str__(self):
         return self.username

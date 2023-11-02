@@ -11,4 +11,22 @@ class UpdateProfile(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('avatar', 'username', 'first_name', 'last_name')
+        fields = ('avatar', 'bio', 'username', 'first_name', 'last_name')
+
+
+class UserProfile(serializers.ModelSerializer):
+    avatar = Base64ImageField(required=False, allow_null=True)
+    username = serializers.CharField(required=False)
+
+    class Meta:
+        model = User
+        fields = (
+            'avatar',
+            'username',
+            'bio',
+            'first_name',
+            'last_name',
+            'is_user',
+            'is_moderator',
+            'is_admin',
+        )
