@@ -18,39 +18,12 @@ class BaseCommentSerializer(serializers.ModelSerializer):
         abstract = True
         fields = ('text', 'author', 'is_visible', 'is_updated', 'created_at')
 
-    def create(self, validated_data):
-        return BaseCommentSerializer.objects.create(**validated_data)
-
     def update(self, instance, validated_data):
         instance.text = validated_data.get('text', instance.text)
         instance.is_visible = validated_data.get('is_visible', instance.is_visible)
         instance.is_updated = True
         instance.save()
         return instance
-
-
-class BaseRatingSerializer(serializers.ModelSerializer):
-    """Serialize rating structure"""
-
-    class Meta:
-        abstract = True
-        fields = 'rating'
-
-
-class SongRatingSerializer(BaseRatingSerializer):
-    """Serialize song rating"""
-
-    class Meta(BaseRatingSerializer.Meta):
-        model = SongRating
-        fields = BaseRatingSerializer.Meta.fields + 'album'
-
-
-class AlbumRatingSerializer(BaseRatingSerializer):
-    """Serialize album rating"""
-
-    class Meta(BaseRatingSerializer.Meta):
-        model = AlbumRating
-        fields = BaseRatingSerializer.Meta.fields + 'album'
 
 
 class CommentSongSerializer(BaseCommentSerializer):
