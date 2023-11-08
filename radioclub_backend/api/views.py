@@ -1,10 +1,33 @@
 from django.contrib.auth import get_user_model
 from rest_framework import mixins, viewsets
+from django.db.models import Avg
 
 from users.serializers import UserProfile
-from .permissions import Profile
+from .permissions import Profile, AdminOrReadOnly
+from songs.models import Album
+from songs.serializers import AlbumSerializer, AlbumListSerializer
 
 User = get_user_model()
+
+
+class AlbumViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet):
+
+    queryset = Album.objects.all().annotate(
+        Avg('album_ratings__rating')
+    )
+    serializer_class = AlbumSerializer
+    http_method_names = ('get', 'patch')
+    lookup_field = 'slug'
+    permission_classes = (AdminOrReadOnly,)
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return AlbumListSerializer
+        return AlbumSerializer
 
 
 class ProfileViewSet(
@@ -19,4 +42,4 @@ class ProfileViewSet(
     queryset = User.objects.all()
     http_method_names = ('get', 'patch')
     serializer_class = UserProfile
-    permission_classes = (Profile, )
+    permission_classes = (Profile,)

@@ -102,6 +102,9 @@ class BaseRating(models.Model):
         default=0
     )
 
+    class Meta:
+        abstract = True
+
 
 class AlbumRating(BaseRating):
     album = models.ForeignKey(
