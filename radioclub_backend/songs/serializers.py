@@ -11,13 +11,11 @@ class AlbumListSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
-
     class Meta:
         model = Album
         fields = (
             'title', 'cover', 'published_year', 'description', 'slug',
             'rating',)
-
 
 
 class BaseCommentSerializer(serializers.ModelSerializer):
@@ -55,16 +53,21 @@ class CommentAlbumSerializer(serializers.ModelSerializer):
 
 
 class SongSerializer(serializers.ModelSerializer):
-    """Song serialize"""
-    average_rating = serializers.SerializerMethodField()
+    """Song serializer"""
+    album = serializers.SlugRelatedField(
+        slug_field='slug',
+        queryset=Album.objects.all(),
+    )
+    rating = serializers.IntegerField(
+        source='song_ratings__rating__avg',
+        read_only=True,
+    )
 
     class Meta:
         model = Song
         fields = (
-            'name', 'album', 'description', 'average_rating', 'audio_file')
-
-    def get_average_rating(self, obj):
-        return obj.average_rating
+            'name', 'album', 'description', 'audio_file', 'rating', 'slug')
+        read_only_fields = ('audio_file', 'album', 'rating', 'slug')
 
 
 class AlbumSerializer(serializers.ModelSerializer):

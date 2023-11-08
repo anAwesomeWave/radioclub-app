@@ -4,10 +4,24 @@ from django.db.models import Avg
 
 from users.serializers import UserProfile
 from .permissions import Profile, AdminOrReadOnly
-from songs.models import Album
-from songs.serializers import AlbumSerializer, AlbumListSerializer
+from songs.models import Album, Song
+from songs.serializers import AlbumSerializer, AlbumListSerializer, \
+    SongSerializer
 
 User = get_user_model()
+
+
+class SongViewSet(mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin,
+                  viewsets.GenericViewSet):
+    queryset = Song.objects.all().annotate(
+        Avg('song_ratings__rating')
+    )
+    serializer_class = SongSerializer
+    lookup_field = 'slug'
+    permission_classes = (AdminOrReadOnly,)
+    http_method_names = ('get', 'patch')
 
 
 class AlbumViewSet(
@@ -15,7 +29,6 @@ class AlbumViewSet(
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet):
-
     queryset = Album.objects.all().annotate(
         Avg('album_ratings__rating')
     )

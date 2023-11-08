@@ -44,7 +44,9 @@ class Song(models.Model):
     album = models.ForeignKey(
         Album,
         on_delete=models.CASCADE,
-        related_name='songs'
+        related_name='songs',
+        null=True,
+        blank=True,
     )
     description = models.TextField(
         null=True,
