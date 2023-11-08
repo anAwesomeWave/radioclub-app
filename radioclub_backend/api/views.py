@@ -1,4 +1,10 @@
+from django.contrib.auth import get_user_model
 from rest_framework import mixins, viewsets
+
+from users.serializers import UserProfile
+from .permissions import Profile
+
+User = get_user_model()
 
 
 class ProfileViewSet(
@@ -10,4 +16,7 @@ class ProfileViewSet(
         что-то, админы также смогут назначать модераторов и других адмминов
         и снимать модеров
     """
-    pass
+    queryset = User.objects.all()
+    http_method_names = ('get', 'patch')
+    serializer_class = UserProfile
+    permission_classes = (Profile, )
