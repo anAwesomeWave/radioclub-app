@@ -9,3 +9,4 @@ venv/
 media/*
 !media/.gitkeep
 *__pycache__*
+.pytest_cache/
