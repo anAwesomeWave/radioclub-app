@@ -6,13 +6,16 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.conf import settings
 
-from .views import ProfileViewSet
+from .views import ProfileViewSet, AlbumViewSet, SongViewSet
 
 API_VERSION = 'v1'
 
 router_v1 = DefaultRouter()
 
 router_v1.register('users', ProfileViewSet, basename='profile')
+router_v1.register('albums', AlbumViewSet, basename='albums')
+router_v1.register('songs', SongViewSet, basename='songs')
+
 urlpatterns = [
     # our api endpoints
     path('', include(router_v1.urls)),

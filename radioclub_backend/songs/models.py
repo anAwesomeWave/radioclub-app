@@ -44,7 +44,9 @@ class Song(models.Model):
     album = models.ForeignKey(
         Album,
         on_delete=models.CASCADE,
-        related_name='songs'
+        related_name='songs',
+        null=True,
+        blank=True,
     )
     description = models.TextField(
         null=True,
@@ -101,6 +103,9 @@ class BaseRating(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(10)],
         default=0
     )
+
+    class Meta:
+        abstract = True
 
 
 class AlbumRating(BaseRating):
