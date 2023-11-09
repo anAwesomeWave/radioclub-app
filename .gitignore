@@ -6,8 +6,8 @@ venv/
 *.iml
 .idea
 .env
-media/*
-!media/.gitkeep
+radioclub_backend/media/*
+!radioclub_backend/media/.gitkeep
 radioclub_backend/static/data/
 !radioclub_backend/static/data/csv/
 *__pycache__*
