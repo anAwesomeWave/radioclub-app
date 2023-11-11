@@ -13,6 +13,7 @@ class Command(BaseCommand):
         в соответствующие таблицы в базе данных.
     '''
     FILE_TO_MODEL = {
+        # app -> list(csv_file, model, list(fields), list(file_fields))
         'songs':
             (
                 ('albums.csv', 'Album',
@@ -20,6 +21,11 @@ class Command(BaseCommand):
                   'published_year', 'slug'),
                  ('cover',)
                  ),
+                ('songs.csv', 'Song', (
+                    'id', 'name', 'description', 'audio_file',
+                    'slug', 'album_id'
+                ), ('audio_file',)
+                 )
             ),
     }
 
