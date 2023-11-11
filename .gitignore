@@ -9,5 +9,4 @@ venv/
 radioclub_backend/media/*
 !radioclub_backend/media/.gitkeep
 radioclub_backend/static/data/albums/
-!radioclub_backend/static/data/csv/
 *__pycache__*
