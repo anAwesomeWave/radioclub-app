@@ -21,7 +21,6 @@ class BaseLoadCsvData:
             with open(self.file_path, 'r') as file:
                 reader = csv.reader(file)
                 headers = next(reader)
-                print(headers)
                 if self.field_names is not None:
                     headers = self.field_names
                 for row in reader:

@@ -37,7 +37,6 @@ class Command(BaseCommand):
             for data in self.FILE_TO_MODEL[app[0]]:
                 file_path = self.CSV_DIR + data[0]
                 class_name = data[1]
-                print(file_path, class_name)
                 load_instance = app[1](
                     file_path,
                     class_name,
@@ -45,6 +44,7 @@ class Command(BaseCommand):
                     data[3],
                 )
 
+                # print(file_path, class_name)
                 self.stdout.write(
                     'Loading data from "%s" to database' % file_path
                 )
