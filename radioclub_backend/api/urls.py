@@ -15,7 +15,7 @@ router_v1 = DefaultRouter()
 router_v1.register('users', ProfileViewSet, basename='profile')
 router_v1.register('albums', AlbumViewSet, basename='albums')
 router_v1.register('songs', SongViewSet, basename='songs')
-router_v1.register(r'songs/(?P<slug>[\w+]+)/comments', CommentSongViewSet, basename='comments')
+router_v1.register(r'^songs/(?P<slug>[\w+]+)/comments', CommentSongViewSet, basename='comments')
 
 urlpatterns = [
     # our api endpoints

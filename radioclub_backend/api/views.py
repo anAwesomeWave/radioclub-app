@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from rest_framework import mixins, viewsets
 from django.db.models import Avg
 from rest_framework.generics import get_object_or_404
-
 from users.serializers import UserProfile
 from .permissions import Profile, AdminOrReadOnly, IsOwnerOrModerator
 from songs.models import Album, Song, CommentSong
@@ -12,16 +11,20 @@ from songs.serializers import AlbumSerializer, AlbumListSerializer, \
 User = get_user_model()
 
 
-class CommentSongViewSet(viewsets.GenericViewSet):
-    queryset = CommentSong.objects.all()
+class CommentSongViewSet(viewsets.ModelViewSet):
+
     serializer_class = CommentSongSerializer
     permission_classes = (IsOwnerOrModerator,)
 
     def get_slug(self):
-        return get_object_or_404(Song, slug=self.kwargs('slug'))
+        return get_object_or_404(Song, slug=self.kwargs['slug'])
 
     def get_queryset(self, **kwargs):
-        return self.get_slug().comments.all()
+        return self.get_slug().song_comments.filter(is_visible=True)
+
+    def destroy(self, request, pk=None):
+        comment = get_object_or_404(self.queryset, pk=pk)
+        comment.is_visible = False
 
 
 class SongViewSet(mixins.ListModelMixin,

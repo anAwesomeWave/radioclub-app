@@ -107,7 +107,8 @@ class CommentSong(models.Model):
         'self',
         null=True,
         blank=True,
+        default=None,
         on_delete=models.CASCADE,
-        related_name='replies'
+        related_name='replies',
     )
     created_at = models.DateTimeField()

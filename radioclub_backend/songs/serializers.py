@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from .models import Album, Song, CommentSong, SongRating, \
     AlbumRating
 
@@ -20,7 +19,7 @@ class AlbumListSerializer(serializers.ModelSerializer):
 
 class FilterCommentSerializer(serializers.ListSerializer):
     def to_representation(self, data):
-        data = data.filter(reply_to=None)
+        data = data.filter(parent=None)
         return super().to_representation(data)
 
 
