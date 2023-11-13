@@ -25,7 +25,10 @@ urlpatterns = [
 
     path('auth/', include('users.urls')),  # handle user actions and auth
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # for imgs and files
+    path('api/', include('api.urls')),  # core api
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)# for imgs and files
+
 
 if settings.DEBUG:
     # if project is in debug mode add debug toolbar
