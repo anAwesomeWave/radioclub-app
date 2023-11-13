@@ -20,7 +20,7 @@ class CommentSongViewSet(viewsets.ModelViewSet):
         return get_object_or_404(Song, slug=self.kwargs['slug'])
 
     def get_queryset(self, **kwargs):
-        return self.get_slug().song_comments.filter(is_visible=True)
+        return self.get_slug().song_comments.filter(reply_to=None)
 
     def destroy(self, request, pk=None):
         comment = get_object_or_404(self.queryset, pk=pk)

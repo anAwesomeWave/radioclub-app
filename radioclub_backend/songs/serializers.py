@@ -19,14 +19,18 @@ class AlbumListSerializer(serializers.ModelSerializer):
 
 class FilterCommentSerializer(serializers.ListSerializer):
     def to_representation(self, data):
-        data = data.filter(parent=None)
-        return super().to_representation(data)
+        data = data.filter(is_visible=True)
+        return super(FilterCommentSerializer, self).to_representation(data)
 
 
 class RecursiveSerializer(serializers.Serializer):
     def to_representation(self, value):
-        serializer = self.parent.reply_to.__class__(value, context=self.context)
+        serializer = self.parent.parent.__class__(value, context=self.context)
         return serializer.data
+
+    class Meta:
+        model = CommentSong
+        list_serializer_class = FilterCommentSerializer
 
 
 class CommentSongSerializer(serializers.ModelSerializer):
