@@ -9,6 +9,7 @@ from songs import models as song_models
 
 class BaseLoadCsvData:
     """ Класс для перегонки данных из csv в бд"""
+
     def __init__(self, file_path, field_names, file_fields):
         # принимает путь до csv файла и список колонок, в которые будут
         # записаны данные (порядок важен)
@@ -16,6 +17,7 @@ class BaseLoadCsvData:
         # self.model = getattr(r_models, model_name)
         self.field_names = field_names
         self.file_fields = file_fields
+
     def load_data(self):
         if os.path.isfile(self.file_path) and self.file_path.endswith('.csv'):
             with open(self.file_path, 'r') as file:
