@@ -8,6 +8,7 @@ User = get_user_model()
 
 
 class ProfileViewSet(
+    mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet):
@@ -19,4 +20,4 @@ class ProfileViewSet(
     queryset = User.objects.all()
     http_method_names = ('get', 'patch')
     serializer_class = UserProfile
-    permission_classes = (Profile, )
+    permission_classes = (Profile,)
