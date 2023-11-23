@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from drf_extra_fields.fields import Base64ImageField
 
 from users.models import CustomUser
+
 User = get_user_model()
 
 
@@ -12,7 +13,15 @@ class UpdateProfile(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('avatar', 'bio', 'username', 'first_name', 'last_name')
+        fields = (
+            'avatar',
+            'bio',
+            'username',
+            'first_name',
+            'last_name',
+            'is_superuser',
+        )
+        read_only_fields = ('is_superuser',)
 
 
 class UserProfile(serializers.ModelSerializer):
@@ -31,5 +40,6 @@ class UserProfile(serializers.ModelSerializer):
             'bio',
             'first_name',
             'last_name',
-            'role'
+            'role',
+            'is_superuser',
         )
