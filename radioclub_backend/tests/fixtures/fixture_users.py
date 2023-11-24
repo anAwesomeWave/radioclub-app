@@ -1,5 +1,4 @@
 from rest_framework.test import APIClient
-
 import pytest
 from rest_framework_simplejwt.tokens import AccessToken
 
@@ -118,7 +117,7 @@ def token_user1(user1):
 
 
 @pytest.fixture
-def user_client1(token_user1):
+def user1_client(token_user1):
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {token_user1["access"]}')
     return client
@@ -133,7 +132,7 @@ def token_user2(user2):
 
 
 @pytest.fixture
-def user_client2(token_user2):
+def user2_client(token_user2):
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {token_user2["access"]}')
     return client

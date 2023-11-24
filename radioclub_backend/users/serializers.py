@@ -8,6 +8,7 @@ User = get_user_model()
 
 
 class UpdateProfile(serializers.ModelSerializer):
+    """ for 'users/me' endpoint """
     avatar = Base64ImageField(required=False, allow_null=True)
     username = serializers.CharField(required=False)
 
