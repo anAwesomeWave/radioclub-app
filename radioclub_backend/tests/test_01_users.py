@@ -72,12 +72,12 @@ class Test01UserAPI:
             '''
         )
 
-    def test_users_me_get(self, user1_client, user1):
+    def test_users_me_get(self, user1, user1_client):
         response = user1_client.get(self.USERS_URL + 'me/')
 
         assert response.status_code == HTTPStatus.OK, (
             f'''Проверьте, что пользователь получает статус-код 
-            {HTTPStatus.OK} при PATCH запросе к своей странице.
+            {HTTPStatus.OK} при GET запросе к своей странице.
             '''
         )
 

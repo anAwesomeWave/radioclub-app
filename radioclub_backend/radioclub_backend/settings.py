@@ -225,7 +225,9 @@ DJOSER = {
     },
     'EMAIL': {
         'activation': 'users.email.CustomActivationEmail',
-    }
+    },
+    'USER_ID_FIELD': 'id',
+    'TOKEN_MODEL': None,  # we use jwt
 }
 
 # EMAIL SMTP CONFIG
