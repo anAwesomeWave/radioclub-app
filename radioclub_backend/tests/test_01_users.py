@@ -7,6 +7,7 @@ import pytest
 @pytest.mark.django_db(transaction=True)
 class Test01UserAPI:
     USERS_URL = '/api/v1/users/'
+    ME_URL = '/auth/users/me/'
     PATCH_DATA = {
         'first_name': 'changed_name',
         'username': 'changed_uname',
@@ -72,8 +73,9 @@ class Test01UserAPI:
             '''
         )
 
-    def test_users_me_get(self, user1, user1_client):
-        response = user1_client.get(self.USERS_URL + 'me/')
+    # @pytest.mark.django_db
+    def test_users_me_get(self, user1_client, user1):
+        response = user1_client.get(self.ME_URL)
 
         assert response.status_code == HTTPStatus.OK, (
             f'''Проверьте, что пользователь получает статус-код 

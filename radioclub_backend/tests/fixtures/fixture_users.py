@@ -1,6 +1,7 @@
 from rest_framework.test import APIClient
 import pytest
 from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 @pytest.fixture
@@ -44,7 +45,7 @@ def user1(django_user_model):
         email='testuser1@rclub.fake',
         password='1234567',
         role='user',
-        bio='user1 bio'
+        bio='user1 bio',
     )
 
 
