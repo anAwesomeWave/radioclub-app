@@ -173,14 +173,71 @@ class Test01AdminApi:
             '''
         )
 
-    def test_admin_cannot_change_other_users_data(self):
-        pass
+    def test_admin_cannot_change_other_users_data(self, admin_client, user1,
+                                                  django_user_model):
+        user_id = user1.id
+        url = self.USERS_URL + str(user_id) + '/'
+        response = admin_client.patch(url, data=self.ADMIN_PATCH_DATA)
 
-    def admin_can_test_own_data(self):
-        pass
+        assert response.status_code == HTTPStatus.OK, (
+            f'''Проверьте, что админ получает
+            {HTTPStatus.OK} при изменении роли пользователя.
+            '''
+        )
 
-    def test_moderator_can_ban(self):
-        pass
+        new_user_role = model_to_dict(
+            django_user_model.objects.get(id=user_id)
+        )
+        assert new_user_role['role'] == self.ADMIN_PATCH_DATA['role'], (
+            f'''Проверьте, что PATCH запрос админа к {url} на изменение роли 
+                пользователя действительно меняет его роль в бд.
+            '''
+        )
 
-    def test_moderator_cannot_make_admin(self):
-        pass
+    def test_admin_can_change_own_data(self, admin, admin_client,
+                                       django_user_model):
+        admin_id = admin.id
+        url = self.USERS_URL + str(admin_id) + '/'
+        response = admin_client.patch(url, data=self.PATCH_DATA)
+
+        assert response.status_code == HTTPStatus.OK, (
+            f'''Проверьте, что админ получает статус-код {HTTPStatus.OK} 
+            при попытке изменить свои данные
+            '''
+        )
+
+        changed_admin = django_user_model.objects.get(id=admin_id)
+        for key in self.PATCH_DATA:
+            assert getattr(changed_admin, key) == self.PATCH_DATA[key], (
+                'Проверьте, что PATCH-запрос админа к своему профилю '
+                'изменяет данные.'
+            )
+
+    def test_moderator(self, moderator_client, user1, django_user_model):
+        user_id = user1.id
+        url = self.USERS_URL + str(user_id) + '/'
+        ban_response = moderator_client.patch(url, data=self.ADMIN_BAN_DATA)
+
+        assert ban_response.status_code == HTTPStatus.OK, (
+            f'''Проверьте, что модератор получает
+            {HTTPStatus.OK} при попытке забанить пользователя.
+            '''
+        )
+        response = moderator_client.patch(url, data=self.ADMIN_PATCH_DATA)
+
+        assert response.status_code == HTTPStatus.FORBIDDEN, (
+            f'''Проверьте, что модератор получает
+            {HTTPStatus.FORBIDDEN} при изменении роли пользователя на 
+            модерскую.
+            '''
+        )
+
+        new_user_role = model_to_dict(
+            django_user_model.objects.get(id=user_id)
+        )
+        assert new_user_role['role'] == self.ADMIN_BAN_DATA['role'], (
+            f'''Проверьте, что PATCH запрос модератора к {url} на изменение 
+            роли пользователя на {self.ADMIN_BAN_DATA['role']}
+            действительно меняет его роль в бд.
+            '''
+        )
