@@ -16,8 +16,10 @@ class Profile(permissions.BasePermission):
                 or request.user.is_authenticated)
 
     def has_object_permission(self, request, view, obj):
-        ''' Определяет, может ли пользователь делать действия с объектом'''
-        ''' смотреть могут все, админы могут менять role, а автор все, кроме role'''
+        """ Определяет, может ли пользователь делать действия с объектом"""
+
+        '''смотреть могут все, админы могут менять role, а автор - все, 
+        кроме role'''
         if (request.method in permissions.SAFE_METHODS or
                 request.user.is_superuser):
             return True
@@ -28,6 +30,8 @@ class Profile(permissions.BasePermission):
             return False
         if request.user == obj:
             # пользователь - автор, провеяем, что он не указал role
+            if request.user.is_admin:
+                return True
             return 'role' not in request.data
 
         # админы могут только role менять

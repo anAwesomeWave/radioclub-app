@@ -22,7 +22,7 @@ def admin(django_user_model):
         username='TestAdmin',
         email='testadmin@rclub.fake',
         password='1234567',
-        role='admin',
+        role='Admin',
         bio='admin bio'
     )
 
@@ -33,7 +33,7 @@ def moderator(django_user_model):
         username='TestModerator',
         email='testmoderator@rclub.fake',
         password='1234567',
-        role='moderator',
+        role='Moderator',
         bio='moder bio'
     )
 
@@ -44,7 +44,7 @@ def user1(django_user_model):
         username='TestUser-1',
         email='testuser1@rclub.fake',
         password='1234567',
-        role='user',
+        role='Default',
         bio='user1 bio',
     )
 
@@ -55,7 +55,7 @@ def user2(django_user_model):
         username='TestUser-2',
         email='testuser2@rclub.fake',
         password='1234567',
-        role='user',
+        role='Default',
         bio='user2 bio'
     )
 

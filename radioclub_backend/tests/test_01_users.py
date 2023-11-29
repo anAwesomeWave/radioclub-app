@@ -15,6 +15,8 @@ class Test01UserAPI:
     }
 
     def test_users_list_availability(self, client):
+        """Test that page with all users available"""
+
         response = client.get(self.USERS_URL)
 
         assert response.status_code != HTTPStatus.NOT_FOUND, (
@@ -53,6 +55,8 @@ class Test01UserAPI:
                                              client,
                                              user1,
                                              django_user_model):
+        """Test that anonymous users cannot update other's profiles"""
+
         user_id = user1.id
         user_init_data = model_to_dict(
             django_user_model.objects.get(id=user_id)
@@ -73,13 +77,19 @@ class Test01UserAPI:
             '''
         )
 
-    # @pytest.mark.django_db
-    def test_users_me_get(self, user1_client, user1):
+    def test_users_me_get(self, user1_client, client):
+        anon_response = client.get(self.ME_URL)
         response = user1_client.get(self.ME_URL)
 
         assert response.status_code == HTTPStatus.OK, (
             f'''Проверьте, что пользователь получает статус-код 
-            {HTTPStatus.OK} при GET запросе к своей странице.
+            {HTTPStatus.OK} при GET запросе к {self.ME_URL}.
+            '''
+        )
+
+        assert anon_response.status_code == HTTPStatus.UNAUTHORIZED, (
+            f'''Проверьте, что анонимный пользователь получает статус-код
+            {HTTPStatus.UNAUTHORIZED} При GET запросе к {self.ME_URL}
             '''
         )
 
@@ -102,5 +112,75 @@ class Test01UserAPI:
                 'изменяет данные.'
             )
 
-    def test_users_cannot_change_others_profile(self, user1, user2):
+    def test_users_cannot_change_others_profile(self, user1, user2_client,
+                                                django_user_model):
+        user1_id = user1.id
+        user_init_data = model_to_dict(
+            django_user_model.objects.get(id=user1_id)
+        )
+        url = self.USERS_URL + str(user1_id) + '/'
+        response = user2_client.patch(url, data=self.PATCH_DATA)
+
+        assert response.status_code == HTTPStatus.FORBIDDEN, (
+            f'''Проверьте, что пользователь получает статус-код
+                {HTTPStatus.FORBIDDEN}, при попытки изменить чужой профиль.
+            '''
+        )
+
+        user_data = model_to_dict(django_user_model.objects.get(id=user1_id))
+        assert user_data == user_init_data, (
+            '''Проверьте, что пользователь не может менять 
+                чужые данные.
+            '''
+        )
+
+
+@pytest.mark.django_db(transaction=True)
+class Test01AdminApi:
+    USERS_URL = '/api/v1/users/'
+    ME_URL = '/auth/users/me/'
+    PATCH_DATA = {
+        'first_name': 'changed_name',
+        'username': 'changed_uname',
+        'last_name': 'changed_lname'
+    }
+    ADMIN_PATCH_DATA = {
+        'role': 'Moderator'
+    }
+
+    ADMIN_BAN_DATA = {
+        'role': 'Banned'
+    }
+
+    def test_admin_can_change_users_roles(self, admin_client, user1,
+                                          django_user_model):
+        user_id = user1.id
+        url = self.USERS_URL + str(user_id) + '/'
+        response = admin_client.patch(url, data=self.ADMIN_PATCH_DATA)
+
+        assert response.status_code == HTTPStatus.OK, (
+            f'''Проверьте, что админ получает
+            {HTTPStatus.OK} при изменении роли пользователя.
+            '''
+        )
+
+        new_user_role = model_to_dict(
+            django_user_model.objects.get(id=user_id)
+        )
+        assert new_user_role['role'] == self.ADMIN_PATCH_DATA['role'], (
+            f'''Проверьте, что PATCH запрос админа к {url} на изменение роли 
+                пользователя действительно меняет его роль в бд.
+            '''
+        )
+
+    def test_admin_cannot_change_other_users_data(self):
+        pass
+
+    def admin_can_test_own_data(self):
+        pass
+
+    def test_moderator_can_ban(self):
+        pass
+
+    def test_moderator_cannot_make_admin(self):
         pass
