@@ -7,7 +7,7 @@ import pytest
 @pytest.mark.django_db(transaction=True)
 class Test01UserAPI:
     USERS_URL = '/api/v1/users/'
-    ME_URL = '/auth/users/me/'
+    ME_URL = '/api/v1/auth/users/me/'
     PATCH_DATA = {
         'first_name': 'changed_name',
         'username': 'changed_uname',

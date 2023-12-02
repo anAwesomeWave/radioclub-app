@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+from django.core import mail
 from django.forms.models import model_to_dict
 import pytest
 
@@ -97,3 +98,49 @@ class Test01UsersRegistration:
             'некорректные данные, в ответе должна возвращаться информация '
             'о неправильно заполненных полях.'
         )
+
+    def test_01_valid_user_signup(self, client, django_user_model):
+        outbox_before_count = len(mail.outbox)
+        valid_data = {
+            'email': 'valid@rclub.fake',
+            'username': 'valid_username',
+            'password': '1Valid23PassWoRd',
+        }
+
+        response = client.post(self.URL_SIGNUP, data=valid_data)
+        outbox_after = mail.outbox
+
+        assert response.status_code != HTTPStatus.NOT_FOUND, (
+            f'Эндпоинт `{self.URL_SIGNUP}` не найден. Проверьте настройки '
+            'в *urls.py*.'
+        )
+
+        assert response.status_code == HTTPStatus.CREATED, (
+            'POST-запрос с корректными данными, отправленный на эндпоинт '
+            f'`{self.URL_SIGNUP}`, должен вернуть ответ со статусом 200.'
+        )
+
+        new_user = django_user_model.objects.filter(email=valid_data['email'])
+        assert new_user.exists(), (
+            'POST-запрос с корректными данными, отправленный на эндпоинт '
+            f'`{self.URL_SIGNUP}`, должен создать нового пользователя.'
+        )
+        assert new_user.get(email=valid_data['email']).is_active is False, (
+            '''Проверьте, что вновь зарегестрированный пользователь не 
+            является активным.
+            '''
+        )
+        # Test confirmation code
+        assert len(outbox_after) == outbox_before_count + 1, (
+            f'Если POST-запрос, отправленный на эндпоинт `{self.URL_SIGNUP}`, '
+            f'содержит корректные данные - должен быть отправлен email'
+            'с кодом подтвержения.'
+        )
+        assert valid_data['email'] in outbox_after[0].to, (
+            'Если POST-запрос, отправленный на эндпоинт  '
+            f'`{self.URL_SIGNUP}`, содержит корректные данные - письмо с '
+            'подтверждением должно отправляться на `email`, указанный в '
+            'запросе.'
+        )
+
+        new_user.delete()
