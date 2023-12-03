@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from .models import Album, Song, CommentSong, CommentAlbum, SongRating, \
+from .models import Album, Song, CommentSong, SongRating, \
     AlbumRating
 
 
@@ -18,12 +17,31 @@ class AlbumListSerializer(serializers.ModelSerializer):
             'rating',)
 
 
-class BaseCommentSerializer(serializers.ModelSerializer):
-    """Serialize comment structure"""
+class FilterCommentSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.filter(is_visible=True)
+        return super(FilterCommentSerializer, self).to_representation(data)
+
+
+class RecursiveSerializer(serializers.Serializer):
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
 
     class Meta:
-        abstract = True
-        fields = ('text', 'author', 'is_visible', 'is_updated', 'created_at')
+        model = CommentSong
+        list_serializer_class = FilterCommentSerializer
+
+
+class CommentSongSerializer(serializers.ModelSerializer):
+    """Serialize comment structure"""
+    replies = RecursiveSerializer(many=True)
+
+    class Meta:
+        model = CommentSong
+        list_serializer_class = FilterCommentSerializer
+        fields = ('text', 'author', 'is_visible', 'is_updated',
+                  'created_at', 'song_relation', 'replies')
 
     def update(self, instance, validated_data):
         instance.text = validated_data.get('text', instance.text)
@@ -32,24 +50,6 @@ class BaseCommentSerializer(serializers.ModelSerializer):
         instance.is_updated = True
         instance.save()
         return instance
-
-
-class CommentSongSerializer(BaseCommentSerializer):
-    """CommentSong serialize"""
-
-    class Meta(BaseCommentSerializer.Meta):
-        model = CommentSong
-        fields = BaseCommentSerializer.Meta.fields + (
-            'song_relation', 'reply_to')
-
-
-class CommentAlbumSerializer(serializers.ModelSerializer):
-    """CommentSong serialize"""
-
-    class Meta(BaseCommentSerializer.Meta):
-        model = CommentAlbum
-        fields = BaseCommentSerializer.Meta.fields + (
-            'album_relation', 'reply_to')
 
 
 class SongSerializer(serializers.ModelSerializer):
@@ -80,7 +80,7 @@ class AlbumSerializer(serializers.ModelSerializer):
     songs = serializers.SlugRelatedField(
         slug_field='slug',
         queryset=Song.objects.all(),
-        many=True
+        many=True,
     )
 
     class Meta:
@@ -104,6 +104,3 @@ class AlbumSerializer(serializers.ModelSerializer):
             SongSerializer(song).data for song in instance.songs.all()
         ]
         return representation
-
-    def get_average_rating(self, obj):
-        return obj.average_rating
