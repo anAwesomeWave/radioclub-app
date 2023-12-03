@@ -8,6 +8,7 @@ User = get_user_model()
 
 
 class UpdateProfile(serializers.ModelSerializer):
+    """ for 'users/me' endpoint """
     avatar = Base64ImageField(required=False, allow_null=True)
     username = serializers.CharField(required=False)
 
@@ -27,10 +28,6 @@ class UpdateProfile(serializers.ModelSerializer):
 class UserProfile(serializers.ModelSerializer):
     avatar = Base64ImageField(required=False, allow_null=True)
     username = serializers.CharField(required=False)
-    role = serializers.ChoiceField(
-        source='get_role_display',
-        choices=CustomUser.ROLE_CHOICE
-    )
 
     class Meta:
         model = User

@@ -23,11 +23,9 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('auth/', include('users.urls')),  # handle user actions and auth
-
     path('api/', include('api.urls')),  # core api
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)# for imgs and files
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # for imgs and files
 
 
 if settings.DEBUG:

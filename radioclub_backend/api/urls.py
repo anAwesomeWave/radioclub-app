@@ -19,6 +19,8 @@ router_v1.register('songs', SongViewSet, basename='songs')
 urlpatterns = [
     # our api endpoints
     path('', include(router_v1.urls)),
+
+    path('auth/', include('users.urls')),  # handle user actions and auth
 ]
 
 # schema settings for drf yasg
