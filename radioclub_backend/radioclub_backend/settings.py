@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
     'drf_yasg',
+    'django_filters',
     'djoser',
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
@@ -162,6 +163,8 @@ REST_FRAMEWORK = {
         # JWT-authentication
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': None,
+    'PAGE_SIZE': 10,
 }
 
 # Register custom user model
