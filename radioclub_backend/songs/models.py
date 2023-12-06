@@ -110,4 +110,6 @@ class CommentSong(models.Model):
         on_delete=models.SET_NULL,
         related_name='replies',
     )
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
