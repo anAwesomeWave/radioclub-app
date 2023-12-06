@@ -1,7 +1,11 @@
 from django.contrib.auth import get_user_model
 from rest_framework import mixins, viewsets
 from django.db.models import Avg
+from rest_framework import filters
 from rest_framework.generics import get_object_or_404
+from rest_framework.pagination import PageNumberPagination
+from django_filters.rest_framework import DjangoFilterBackend
+
 from users.serializers import UserProfile
 from .permissions import Profile, AdminOrReadOnly, IsOwnerOrModerator
 from songs.models import Album, Song, CommentSong
@@ -12,7 +16,6 @@ User = get_user_model()
 
 
 class CommentSongViewSet(viewsets.ModelViewSet):
-
     serializer_class = CommentSongSerializer
     permission_classes = (IsOwnerOrModerator,)
 
@@ -38,6 +41,10 @@ class SongViewSet(mixins.ListModelMixin,
     lookup_field = 'slug'
     permission_classes = (AdminOrReadOnly,)
     http_method_names = ('get', 'patch')
+    pagination_class = PageNumberPagination
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    filterset_fields = ('album__slug', 'slug')
+    search_fields = ('name', 'slug')
 
 
 class AlbumViewSet(
