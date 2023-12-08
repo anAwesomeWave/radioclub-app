@@ -3,6 +3,17 @@ from rest_framework import permissions
 from users.models import ADMIN_ROLES
 
 
+class IsOwnerOrModerator(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return request.method in permissions.SAFE_METHODS or request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user.owner or (request.user.is_admin or request.user.is_moderator) and request.method == 'DELETE'
+
+
 class AdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         return (request.method in permissions.SAFE_METHODS
@@ -13,24 +24,25 @@ class AdminOrReadOnly(permissions.BasePermission):
 class Profile(permissions.BasePermission):
     def has_permission(self, request, view):
         return (request.method in permissions.SAFE_METHODS
-                or request.user.is_authenticated
-                and (request.user.is_moderator or request.user.is_admin))
+                or request.user.is_authenticated)
 
     def has_object_permission(self, request, view, obj):
-        ''' Определяет, может ли пользователь делать действия с объектом'''
-        ''' смотреть могут все, админы могут менять role, а автор все, кроме role'''
+        """ Определяет, может ли пользователь делать действия с объектом"""
+
+        '''смотреть могут все, админы могут менять role, а автор - все, 
+        кроме role'''
         if (request.method in permissions.SAFE_METHODS or
                 request.user.is_superuser):
             return True
 
-        # если пользователь не  аутентифицирован или он не автор и не админ
-        if not request.user.is_authenticated or (
-                request.user != obj and not (request.user.is_moderator
-                                             or request.user.is_admin)
-        ):
+        # если пользователь не автор и не админ
+        if request.user != obj and not (request.user.is_moderator
+                                        or request.user.is_admin):
             return False
         if request.user == obj:
             # пользователь - автор, провеяем, что он не указал role
+            if request.user.is_admin:
+                return True
             return 'role' not in request.data
 
         # админы могут только role менять

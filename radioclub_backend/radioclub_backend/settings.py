@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework_simplejwt',
     'debug_toolbar',
     'drf_yasg',
+    'django_filters',
     'djoser',
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
@@ -161,6 +163,8 @@ REST_FRAMEWORK = {
         # JWT-authentication
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': None,
+    'PAGE_SIZE': 10,
 }
 
 # Register custom user model
@@ -169,7 +173,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 # jwt-token settings
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
@@ -224,7 +228,9 @@ DJOSER = {
     },
     'EMAIL': {
         'activation': 'users.email.CustomActivationEmail',
-    }
+    },
+    'USER_ID_FIELD': 'id',
+    'TOKEN_MODEL': None,  # we use jwt
 }
 
 # EMAIL SMTP CONFIG
