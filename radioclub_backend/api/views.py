@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from rest_framework.response import Response
 from rest_framework import mixins, viewsets
 from django.db.models import Avg
 from rest_framework import filters
@@ -7,6 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 
 from users.serializers import UserProfile
+from rest_framework import status
 from .permissions import Profile, AdminOrReadOnly, IsOwnerOrModerator
 from songs.models import Album, Song, CommentSong
 from songs.serializers import AlbumSerializer, AlbumListSerializer, \
@@ -25,9 +27,12 @@ class CommentSongViewSet(viewsets.ModelViewSet):
     def get_queryset(self, **kwargs):
         return self.get_slug().song_comments.filter(reply_to=None)
 
-    def destroy(self, request, pk=None):
-        comment = get_object_or_404(self.queryset, pk=pk)
+    def destroy(self, request, *args, **kwargs):
+        comment = self.get_object()
         comment.is_visible = False
+        comment.save()
+        data = CommentSongSerializer(comment).data
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class SongViewSet(mixins.ListModelMixin,
