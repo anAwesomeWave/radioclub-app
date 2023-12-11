@@ -58,6 +58,5 @@ class TestSongs:
         response = client.get(self.SONGS_URL)
         Song.objects.filter(name='test_song_1').delete()
         response_after_delete = client.get(self.SONGS_URL)
-
-        assert response.json() == valid_data
-        assert response_after_delete.json() == valid_data[1:]
+        assert response.json()['results'] == valid_data
+        assert response_after_delete.json()['results'] == valid_data[1:]
