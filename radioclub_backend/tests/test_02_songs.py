@@ -44,14 +44,20 @@ class TestSongs:
             Test object's creation
         """
 
-        valid_data = [{'name': 'test_song_1', 'album': None, 'description': 'test_description',
-                       'audio_file': 'http://testserver/img/http%3A/127.0.0.1%3A8000/img/name1', 'rating': None,
+        valid_data = [{'name': 'test_song_1', 'album': None,
+                       'description': 'test_description',
+                       'audio_file': 'http://testserver/img/http%3A/127.0.0.1%3A8000/img/name1',
+                       'rating': None,
                        'slug': 'song1'},
-                      {'name': 'test_song_2', 'album': None, 'description': 'test_description',
-                       'audio_file': 'http://testserver/img/http%3A/127.0.0.1%3A8000/img/name2', 'rating': None,
+                      {'name': 'test_song_2', 'album': None,
+                       'description': 'test_description',
+                       'audio_file': 'http://testserver/img/http%3A/127.0.0.1%3A8000/img/name2',
+                       'rating': None,
                        'slug': 'song2'},
-                      {'name': 'test_song_3', 'album': None, 'description': 'test_description',
-                       'audio_file': 'http://testserver/img/http%3A/127.0.0.1%3A8000/img/name3', 'rating': None,
+                      {'name': 'test_song_3', 'album': None,
+                       'description': 'test_description',
+                       'audio_file': 'http://testserver/img/http%3A/127.0.0.1%3A8000/img/name3',
+                       'rating': None,
                        'slug': 'song3'}]
 
         self.set_up(number_songs=4)
