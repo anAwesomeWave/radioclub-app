@@ -12,14 +12,6 @@ class TestComments:
     @staticmethod
     def set_up(user1_client, user1, comments=1, number_songs=1):
 
-        """        default_user = CustomUser.objects.create(
-            username='TestUser-1',
-            email='testuser1@rclub.fake',
-            password='1234567',
-            role='Default',
-            bio='user1 bio',
-        )"""
-
         song_comments = []
 
         for i in range(number_songs):
