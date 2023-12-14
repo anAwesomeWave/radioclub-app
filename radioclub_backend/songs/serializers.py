@@ -17,12 +17,14 @@ class AlbumListSerializer(serializers.ModelSerializer):
 
 
 class FilterCommentSerializer(serializers.ListSerializer):
+    """Serializer for nested comments"""
     def to_representation(self, data):
         data = data.filter(is_visible=True)
         return super(FilterCommentSerializer, self).to_representation(data)
 
 
 class RecursiveSerializer(serializers.Serializer):
+    """ Serializer for nested comments"""
     def to_representation(self, value):
         serializer = self.parent.parent.__class__(value, context=self.context)
         return serializer.data

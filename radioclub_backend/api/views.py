@@ -64,6 +64,7 @@ class AlbumViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet
 ):
+    """ViewsSet for album class."""
     queryset = Album.objects.all().annotate(
         Avg('album_ratings__rating')
     )
