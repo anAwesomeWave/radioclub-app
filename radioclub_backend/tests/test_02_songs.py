@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from songs.models import Song, Album, CommentSong
+from songs.models import Song
 import pytest
 
 
@@ -11,10 +11,12 @@ class TestSongs:
     @staticmethod
     def set_up(number_songs=2):
         for i in range(1, number_songs):
-            Song.objects.create(name=f'test_song_{i}',
-                                description='test_description',
-                                audio_file=f'http://127.0.0.1:8000/img/name{i}',
-                                slug=f'song{i}')
+            Song.objects.create(
+                name=f'test_song_{i}',
+                description='test_description',
+                audio_file=f'http://127.0.0.1:8000/img/name{i}',
+                slug=f'song{i}'
+            )
 
     def test_song_availability(self, client):
         """
@@ -46,17 +48,20 @@ class TestSongs:
 
         valid_data = [{'name': 'test_song_1', 'album': None,
                        'description': 'test_description',
-                       'audio_file': 'http://testserver/img/http%3A/127.0.0.1%3A8000/img/name1',
+                       'audio_file': 'http://testserver/img/http%3A/127.0.0'
+                                     '.1%3A8000/img/name1',
                        'rating': None,
                        'slug': 'song1'},
                       {'name': 'test_song_2', 'album': None,
                        'description': 'test_description',
-                       'audio_file': 'http://testserver/img/http%3A/127.0.0.1%3A8000/img/name2',
+                       'audio_file': 'http://testserver/img/http%3A/127.0.0'
+                                     '.1%3A8000/img/name2',
                        'rating': None,
                        'slug': 'song2'},
                       {'name': 'test_song_3', 'album': None,
                        'description': 'test_description',
-                       'audio_file': 'http://testserver/img/http%3A/127.0.0.1%3A8000/img/name3',
+                       'audio_file': 'http://testserver/img/http%3A/127.0.0'
+                                     '.1%3A8000/img/name3',
                        'rating': None,
                        'slug': 'song3'}]
 

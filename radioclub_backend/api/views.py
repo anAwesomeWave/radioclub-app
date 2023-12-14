@@ -10,14 +10,18 @@ from django_filters.rest_framework import DjangoFilterBackend
 from users.serializers import UserProfile
 from rest_framework import status
 from .permissions import Profile, AdminOrReadOnly, IsOwnerOrModerator
-from songs.models import Album, Song, CommentSong
-from songs.serializers import AlbumSerializer, AlbumListSerializer, \
+from songs.models import Album, Song
+from songs.serializers import (
+    AlbumSerializer, AlbumListSerializer,
     SongSerializer, CommentSongSerializer
+)
 
 User = get_user_model()
 
 
 class CommentSongViewSet(viewsets.ModelViewSet):
+    """ViewSet for comments"""
+
     serializer_class = CommentSongSerializer
     permission_classes = (IsOwnerOrModerator,)
 
@@ -39,6 +43,8 @@ class SongViewSet(mixins.ListModelMixin,
                   mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
                   viewsets.GenericViewSet):
+    """ViewSet for Song model"""
+
     queryset = Song.objects.all().annotate(
         Avg('song_ratings__rating')
     )
@@ -56,10 +62,13 @@ class AlbumViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
-    viewsets.GenericViewSet):
+    viewsets.GenericViewSet
+):
     queryset = Album.objects.all().annotate(
         Avg('album_ratings__rating')
     )
+    """Viewset for album model"""
+
     serializer_class = AlbumSerializer
     http_method_names = ('get', 'patch')
     lookup_field = 'slug'
@@ -75,7 +84,8 @@ class ProfileViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
-    viewsets.GenericViewSet):
+    viewsets.GenericViewSet
+):
     """ Viewset for viewing user's profile.
         Все пользователи смогут видеть эту страницу, а модераторы править
         что-то, админы также смогут назначать модераторов и других адмминов

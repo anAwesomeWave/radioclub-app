@@ -6,6 +6,8 @@ ADMIN_ROLES = ['Admin', 'Moderator']
 
 
 class CustomUser(AbstractUser):
+    """Implementation of custom user.
+    Inherits from default Django User model."""
     ADMIN = 'Admin'
     MODERATOR = 'Moderator'
     DEFAULT_USER = 'Default'

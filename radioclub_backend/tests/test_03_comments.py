@@ -1,8 +1,8 @@
 from http import HTTPStatus
 
-from songs.models import Song, Album, CommentSong
-from users.models import CustomUser
 import pytest
+
+from songs.models import Song, CommentSong
 
 
 @pytest.mark.django_db(transaction=False)
@@ -23,11 +23,12 @@ class TestComments:
         song_comments = []
 
         for i in range(number_songs):
-            Song.objects.create(name=f'test_song_{i + 1}',
-                                description='test_description',
-                                audio_file=f'http://127.0.0.1:8000/img/name1',
-                                slug=f'song{i + 1}'
-                                )
+            Song.objects.create(
+                name=f'test_song_{i + 1}',
+                description='test_description',
+                audio_file='http://127.0.0.1:8000/img/name1',
+                slug=f'song{i + 1}'
+            )
             song_comments.append((i, comments))
 
         for i in range(number_songs):

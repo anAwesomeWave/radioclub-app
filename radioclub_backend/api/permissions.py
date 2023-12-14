@@ -4,17 +4,23 @@ from users.models import ADMIN_ROLES
 
 
 class IsOwnerOrModerator(permissions.BasePermission):
+    """Permission class. Checks that user is owner or has moder role."""
 
     def has_permission(self, request, view):
-        return request.method in permissions.SAFE_METHODS or request.user.is_authenticated
+        return (request.method in permissions.SAFE_METHODS
+                or request.user.is_authenticated)
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return (obj.author == request.user or request.user.is_admin or request.user.is_moderator) and request.method == 'DELETE'
+        return (
+                (obj.author == request.user or request.user.is_admin or
+                 request.user.is_moderator) and request.method == 'DELETE'
+        )
 
 
 class AdminOrReadOnly(permissions.BasePermission):
+    """Permission class. Check that only admin can get access."""
     def has_permission(self, request, view):
         return (request.method in permissions.SAFE_METHODS
                 or request.user.is_authenticated and
@@ -22,15 +28,16 @@ class AdminOrReadOnly(permissions.BasePermission):
 
 
 class Profile(permissions.BasePermission):
+    """Permission class for getting access to the profile's page."""
     def has_permission(self, request, view):
         return (request.method in permissions.SAFE_METHODS
                 or request.user.is_authenticated)
 
     def has_object_permission(self, request, view, obj):
-        """ Определяет, может ли пользователь делать действия с объектом"""
-
-        '''смотреть могут все, админы могут менять role, а автор - все, 
-        кроме role'''
+        """ Определяет, может ли пользователь делать действия с объектом.
+        смотреть могут все, админы могут менять role, а автор - все,
+        кроме role
+        """
         if (request.method in permissions.SAFE_METHODS or
                 request.user.is_superuser):
             return True

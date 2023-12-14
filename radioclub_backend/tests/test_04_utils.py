@@ -1,7 +1,6 @@
 import pytest
 
 from songs.management.utils import SongLoadCsvData
-from songs.models import Song
 
 
 @pytest.mark.django_db(transaction=True)

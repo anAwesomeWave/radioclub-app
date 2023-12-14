@@ -1,14 +1,14 @@
+from abc import ABC
 import csv
 import os
 
 from django.core.files import File
-from django.conf import settings
 
 from songs import models as song_models
 
 
-class BaseLoadCsvData:
-    """ Класс для перегонки данных из csv в бд"""
+class BaseLoadCsvData(ABC):
+    """ Base abstract class for loading data from csv to db."""
 
     def __init__(self, file_path, field_names, file_fields):
         # принимает путь до csv файла и список колонок, в которые будут
@@ -48,6 +48,8 @@ class BaseLoadCsvData:
 
 
 class SongLoadCsvData(BaseLoadCsvData):
+    """ Class for loading data for 'songs' app. """
+
     def __init__(self, file_path, model_name, field_names, file_fields):
         super().__init__(file_path, field_names, file_fields)
         # get model instance from song app

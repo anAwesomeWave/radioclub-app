@@ -6,6 +6,7 @@ User = get_user_model()
 
 
 class Album(models.Model):
+    """ Album model. """
     cover = models.ImageField(
         upload_to='songs/album-covers/',
         null=True
@@ -29,6 +30,7 @@ class Album(models.Model):
 
 
 class Song(models.Model):
+    """Song model."""
     name = models.CharField(
         max_length=60,
         null=False,
@@ -55,6 +57,7 @@ class Song(models.Model):
 
 
 class BaseRating(models.Model):
+    """ Abstract rating class."""
     rating = models.PositiveSmallIntegerField(
         'Rating',
         validators=[MinValueValidator(0), MaxValueValidator(10)],
@@ -66,6 +69,7 @@ class BaseRating(models.Model):
 
 
 class AlbumRating(BaseRating):
+    """Class for album rating."""
     album = models.ForeignKey(
         Album,
         on_delete=models.CASCADE,
@@ -74,6 +78,7 @@ class AlbumRating(BaseRating):
 
 
 class SongRating(BaseRating):
+    """Class for song rating."""
     song = models.ForeignKey(
         Song,
         on_delete=models.CASCADE,
@@ -82,6 +87,7 @@ class SongRating(BaseRating):
 
 
 class CommentSong(models.Model):
+    """Class for songs' comments."""
     song_relation = models.ForeignKey(
         Song,
         on_delete=models.CASCADE,

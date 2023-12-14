@@ -2,8 +2,6 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from drf_extra_fields.fields import Base64ImageField
 
-from users.models import CustomUser
-
 User = get_user_model()
 
 
@@ -26,6 +24,7 @@ class UpdateProfile(serializers.ModelSerializer):
 
 
 class UserProfile(serializers.ModelSerializer):
+    """Allows users to watch others' profiles."""
     avatar = Base64ImageField(required=False, allow_null=True)
     username = serializers.CharField(required=False)
 

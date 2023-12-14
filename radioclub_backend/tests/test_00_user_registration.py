@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 from django.core import mail
-from django.forms.models import model_to_dict
 import pytest
 
 
@@ -126,9 +125,8 @@ class Test01UsersRegistration:
             f'`{self.URL_SIGNUP}`, должен создать нового пользователя.'
         )
         assert new_user.get(email=valid_data['email']).is_active is False, (
-            '''Проверьте, что вновь зарегестрированный пользователь не 
-            является активным.
-            '''
+            '''Проверьте, что вновь зарегестрированный пользователь не
+            является активным.'''
         )
         # Test confirmation code
         assert len(outbox_after) == outbox_before_count + 1, (
