@@ -1,0 +1,22 @@
+id,name,description,audio_file,slug,album_id
+1,15 Step,,static/data/albums/Radiohead - In Rainbows (2007)/01. 15 Step.flac,15-step,1
+3,Nude,,static/data/albums/Radiohead - In Rainbows (2007)/03. Nude.flac,nude,1
+2,Bodysnatchers,,static/data/albums/Radiohead - In Rainbows (2007)/02. Bodysnatchers.flac,bodysnatchers,1
+4,Weird Fishes - Arpeggi,,static/data/albums/Radiohead - In Rainbows (2007)/04. Weird Fishes- Arpeggi.flac,weird-fishes-arpeggi,1
+5,All I Need,,static/data/albums/Radiohead - In Rainbows (2007)/05. All I Need.flac,all-i-need,1
+6,Faust Arp,,static/data/albums/Radiohead - In Rainbows (2007)/06. Faust Arp.flac,faust-arp,1
+7,Reckoner,,static/data/albums/Radiohead - In Rainbows (2007)/07. Reckoner.flac,reckoner,1
+8,House Of Cards,,static/data/albums/Radiohead - In Rainbows (2007)/08. House Of Cards.flac,house-of-cards,1
+9,Jigsaw Falling Into Place,,static/data/albums/Radiohead - In Rainbows (2007)/09. Jigsaw Falling Into Place.flac,jigsaw-falling-into-place,1
+10,Videotape,,static/data/albums/Radiohead - In Rainbows (2007)/10. Videotape.flac,videotape,1
+11,Burn the Witch,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/01 Burn the Witch.flac,burn-the-witch,2
+12,Daydreaming,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/02 Daydreaming.flac,daydreaming,2
+13,Decks Dark,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/03 Decks Dark.flac,decks-dark,2
+14,Desert Island Disk,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/04 Desert Island Disk.flac,desert-island-disk,2
+15,Ful Stop,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/05 Ful Stop.flac,ful-stop,2
+16,Glass Eyes,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/06 Glass Eyes.flac,glass-eyes,2
+17,Identikit,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/07 Identikit.flac,identikit,2
+18,The Numbers,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/08 The Numbers.flac,the-numbers,2
+19,Present Tense,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/09 Present Tense.flac,present-tense,2
+20,Tinker Tailor Soldier Sailor Rich Man Poor Man Beggar Thief,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/10 Tinker Tailor Soldier Sailor Rich Man Poor Man Beggar Thief.flac,tinker-tailor-soldier,2
+21,True Love Waits,,static/data/albums/Radiohead - A Moon Shaped Pool (2016)(FLAC)(CD)/11 True Love Waits.flac,true-love-waits,2

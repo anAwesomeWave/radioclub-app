@@ -5,3 +5,8 @@ venv/
 *.xml
 *.iml
 .idea
+.env
+radioclub_backend/media/*
+!radioclub_backend/media/.gitkeep
+radioclub_backend/static/data/albums/
+*__pycache__*
