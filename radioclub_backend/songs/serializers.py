@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Album, Song, CommentSong
+from .models import Album, Song, CommentSong, SongRating
 
 
 class AlbumListSerializer(serializers.ModelSerializer):
@@ -60,15 +60,23 @@ class SongSerializer(serializers.ModelSerializer):
         queryset=Album.objects.all(),
     )
     rating = serializers.IntegerField(
-        source='song_ratings__rating__avg',
-        read_only=True,
+        source='song_ratings__rating__avg'
     )
 
     class Meta:
         model = Song
         fields = (
             'name', 'album', 'description', 'audio_file', 'rating', 'slug')
-        read_only_fields = ('audio_file', 'album', 'rating', 'slug')
+        read_only_fields = ('audio_file', 'album', 'slug')
+
+    def update(self, instance, initial_data):
+        if 'song_ratings__rating__avg' in initial_data:
+            SongRating.objects.create(
+                rating=initial_data['song_ratings__rating__avg'],
+                song=instance
+            )
+        super().update(instance, initial_data)
+        return instance
 
 
 class AlbumSerializer(serializers.ModelSerializer):
